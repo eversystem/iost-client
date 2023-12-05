@@ -6,11 +6,11 @@ class GASContract extends contract_interface_1.ContractInterface {
     get id() {
         return 'gas.iost';
     }
-    pledge(pledgor, to, amount) {
-        this.call('pledge', [pledgor, to, amount]);
+    pledge(pledger, to, amount) {
+        this.call('pledge', [pledger, to, amount]);
     }
-    unpledge(pledgor, from, amount) {
-        this.call('pledge', [pledgor, from, amount]);
+    unpledge(pledger, from, amount) {
+        this.call('unpledge', [pledger, from, amount]);
     }
 }
 exports.GASContract = GASContract;
