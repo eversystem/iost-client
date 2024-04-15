@@ -28,6 +28,12 @@ class AbstractIOSTAdapter {
     }
 }
 exports.AbstractIOSTAdapter = AbstractIOSTAdapter;
-const getIwalletJS = () => window && window['IWalletJS'];
+const getIwalletJS = () => {
+    const iwallet = window && window['IWalletJS'];
+    if (iwallet.network === 'LOCALNET') {
+        iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
+    }
+    return iwallet;
+};
 exports.getIwalletJS = getIwalletJS;
 //# sourceMappingURL=iwallet-extension.js.map

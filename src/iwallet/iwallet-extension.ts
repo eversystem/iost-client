@@ -10,7 +10,8 @@ export abstract class AbstractAccountAdapter {
   constructor(public readonly _id: string) {}
 }
 export abstract class AbstractHTTPProviderAdapter {
-  constructor(public readonly _host: string) {}
+  // constructor(public readonly _host: string) {}
+  constructor(public _host: string) {}
 }
 export abstract class AbstractRPCAdapter {
   constructor(public readonly _provider: AbstractHTTPProviderAdapter) {}
@@ -50,5 +51,11 @@ export type IWalletExtension = {
   setAccount: (param: AbstractAccountAdapter) => void;
 };
 
-export const getIwalletJS = () =>
-  window && (window['IWalletJS'] as IWalletExtension | undefined);
+export const getIwalletJS = () => {
+  const iwallet =
+    window && (window['IWalletJS'] as IWalletExtension | undefined);
+  if (iwallet.network === 'LOCALNET') {
+    iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
+  }
+  return iwallet;
+};

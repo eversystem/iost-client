@@ -8,7 +8,7 @@ export declare abstract class AbstractAccountAdapter {
     constructor(_id: string);
 }
 export declare abstract class AbstractHTTPProviderAdapter {
-    readonly _host: string;
+    _host: string;
     constructor(_host: string);
 }
 export declare abstract class AbstractRPCAdapter {
