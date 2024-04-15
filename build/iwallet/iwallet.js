@@ -36,7 +36,6 @@ class IWallet {
     }
     set account(account) {
         __classPrivateFieldGet(this, _IWallet_extension, "f").setAccount(account);
-        (0, iwallet_extension_1.patchLocalHost)();
     }
     constructor(extension) {
         _IWallet_instances.add(this);
@@ -57,7 +56,6 @@ class IWallet {
             }
             __classPrivateFieldSet(this, _a, new IWallet(extension), "f", _IWallet_instance);
         }
-        (0, iwallet_extension_1.patchLocalHost)();
         return __classPrivateFieldGet(this, _a, "f", _IWallet_instance);
     }
     signAndSend(tx) {
@@ -104,7 +102,9 @@ class IWallet {
 exports.IWallet = IWallet;
 _a = IWallet, _IWallet_extension = new WeakMap(), _IWallet_instances = new WeakSet(), _IWallet_adapter_get = function _IWallet_adapter_get() {
     const iwallet = __classPrivateFieldGet(this, _IWallet_extension, "f").newIOST(exports.IWALLET_ADAPTER_PACK);
-    (0, iwallet_extension_1.patchLocalHost)();
+    if (iwallet.network === 'LOCALNET') {
+        iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
+    }
     return iwallet;
 };
 _IWallet_instance = { value: void 0 };
