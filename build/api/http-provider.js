@@ -6,15 +6,13 @@ const iwallet_adapter_1 = require("../iwallet/iwallet-adapter");
 class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     async get(url) {
         try {
-            const config = {
-                method: 'get',
+            const instance = axios.default.create({
                 baseURL: this._host,
-                url,
                 headers: {
                     'Content-Type': 'text/plain',
                 },
-            };
-            const res = await axios.default(config);
+            });
+            const res = await instance.get(url);
             return res.data;
         }
         catch (error) {
@@ -28,16 +26,13 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     }
     async post(url, data) {
         try {
-            const config = {
-                method: 'post',
+            const instance = axios.default.create({
                 baseURL: this._host,
-                url,
-                data,
                 headers: {
                     'Content-Type': 'text/plain',
                 },
-            };
-            const res = await axios.default(config);
+            });
+            const res = await instance.post(url, { data });
             return res.data;
         }
         catch (error) {
@@ -51,17 +46,14 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     }
     async stream(url, data) {
         try {
-            const config = {
-                method: 'post',
+            const instance = axios.default.create({
                 baseURL: this._host,
-                url,
-                data,
                 headers: {
                     'Content-Type': 'text/plain',
                 },
                 responseType: 'stream',
-            };
-            const res = await axios.default(config);
+            });
+            const res = await instance.post(url, { data });
             return res.data;
         }
         catch (error) {
