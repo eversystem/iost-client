@@ -102,9 +102,7 @@ class IWallet {
 exports.IWallet = IWallet;
 _a = IWallet, _IWallet_extension = new WeakMap(), _IWallet_instances = new WeakSet(), _IWallet_adapter_get = function _IWallet_adapter_get() {
     const iwallet = __classPrivateFieldGet(this, _IWallet_extension, "f").newIOST(exports.IWALLET_ADAPTER_PACK);
-    if (iwallet.network === 'LOCALNET') {
-        iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
-    }
+    (0, iwallet_extension_1.patchIWalletLocalHost)(iwallet);
     return iwallet;
 };
 _IWallet_instance = { value: void 0 };

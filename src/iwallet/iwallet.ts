@@ -10,6 +10,7 @@ import {
   getIwalletJS,
   IWalletAdapterPackType,
   IWalletExtension,
+  patchIWalletLocalHost,
 } from './iwallet-extension';
 
 export type IWalletSignature = {
@@ -48,10 +49,7 @@ export class IWallet implements IOSTConfig {
     const iwallet = this.#extension.newIOST(
       IWALLET_ADAPTER_PACK,
     ) as IOSTAdapter;
-    // localnet patch
-    if (iwallet.network === 'LOCALNET') {
-      iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
-    }
+    patchIWalletLocalHost(iwallet);
     return iwallet;
   }
   get account() {

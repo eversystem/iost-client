@@ -1,6 +1,6 @@
 import { Network, TransactionArgumentType } from '../data/params';
 import { Transaction } from '../transaction/transaction';
-import { IOSTAdapterConfig } from './iwallet-adapter';
+import { IOSTAdapter, IOSTAdapterConfig } from './iwallet-adapter';
 
 export abstract class AbstractAccountAdapter {
   abstract network: Network;
@@ -55,4 +55,10 @@ export const getIwalletJS = () => {
   const iwallet =
     window && (window['IWalletJS'] as IWalletExtension | undefined);
   return iwallet;
+};
+
+export const patchIWalletLocalHost = (iwallet: IWalletExtension | IOSTAdapter) => {
+  if (iwallet.network === 'LOCALNET') {
+    iwallet.rpc._provider._host = 'http://127.0.0.1:300001';
+  }
 };

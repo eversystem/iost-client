@@ -1,6 +1,6 @@
 import { Network, TransactionArgumentType } from '../data/params';
 import { Transaction } from '../transaction/transaction';
-import { IOSTAdapterConfig } from './iwallet-adapter';
+import { IOSTAdapter, IOSTAdapterConfig } from './iwallet-adapter';
 export declare abstract class AbstractAccountAdapter {
     readonly _id: string;
     abstract network: Network;
@@ -46,3 +46,4 @@ export type IWalletExtension = {
     setAccount: (param: AbstractAccountAdapter) => void;
 };
 export declare const getIwalletJS: () => IWalletExtension;
+export declare const patchIWalletLocalHost: (iwallet: IWalletExtension | IOSTAdapter) => void;

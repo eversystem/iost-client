@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getIwalletJS = exports.AbstractIOSTAdapter = exports.AbstractRPCAdapter = exports.AbstractHTTPProviderAdapter = exports.AbstractAccountAdapter = void 0;
+exports.patchIWalletLocalHost = exports.getIwalletJS = exports.AbstractIOSTAdapter = exports.AbstractRPCAdapter = exports.AbstractHTTPProviderAdapter = exports.AbstractAccountAdapter = void 0;
 class AbstractAccountAdapter {
     get name() {
         return this._id;
@@ -33,4 +33,10 @@ const getIwalletJS = () => {
     return iwallet;
 };
 exports.getIwalletJS = getIwalletJS;
+const patchIWalletLocalHost = (iwallet) => {
+    if (iwallet.network === 'LOCALNET') {
+        iwallet.rpc._provider._host = 'http://127.0.0.1:300001';
+    }
+};
+exports.patchIWalletLocalHost = patchIWalletLocalHost;
 //# sourceMappingURL=iwallet-extension.js.map
