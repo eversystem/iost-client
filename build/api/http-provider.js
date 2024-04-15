@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HTTPProvider = void 0;
-const axios_1 = require("axios");
+const axios = require("axios");
 const iwallet_adapter_1 = require("../iwallet/iwallet-adapter");
 class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     async get(url) {
@@ -14,8 +14,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                     'Content-Type': 'text/plain',
                 },
             };
-            const axios = new axios_1.Axios(config);
-            const res = await axios.request(config);
+            const res = await axios.default(config);
             return res.data;
         }
         catch (error) {
@@ -38,8 +37,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                     'Content-Type': 'text/plain',
                 },
             };
-            const axios = new axios_1.Axios(config);
-            const res = await axios.request(config);
+            const res = await axios.default(config);
             return res.data;
         }
         catch (error) {
@@ -63,8 +61,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                 },
                 responseType: 'stream',
             };
-            const axios = new axios_1.Axios(config);
-            const res = await axios.request(config);
+            const res = await axios.default(config);
             return res.data;
         }
         catch (error) {

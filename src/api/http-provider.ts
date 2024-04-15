@@ -1,3 +1,4 @@
+import * as axios from 'axios';
 import { Axios, AxiosRequestConfig } from 'axios';
 import { HTTPProviderAdapter } from '../iwallet/iwallet-adapter';
 
@@ -12,8 +13,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
           'Content-Type': 'text/plain',
         },
       };
-      const axios = new Axios(config);
-      const res = await axios.request<ResponseType>(config);
+      const res = await axios.default<ResponseType>(config);
       return res.data;
     } catch (error: any) {
       if (error.response) {
@@ -34,8 +34,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
           'Content-Type': 'text/plain',
         },
       };
-      const axios = new Axios(config);
-      const res = await axios.request<ResponseType>(config);
+      const res = await axios.default<ResponseType>(config);
       return res.data;
     } catch (error: any) {
       if (error.response) {
@@ -57,8 +56,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
         },
         responseType: 'stream',
       };
-      const axios = new Axios(config);
-      const res = await axios.request<ResponseType>(config);
+      const res = await axios.default<ResponseType>(config);
       return res.data;
     } catch (error: any) {
       if (error.response) {
