@@ -39,11 +39,9 @@ export type IWalletAdapterPackType = {
 export type IWalletExtension = {
     account: AbstractAccountAdapter;
     enable: () => Promise<string>;
-    IOST: AbstractIOSTAdapter;
     network: Network;
     newIOST: (pack: IWalletAdapterPackType) => AbstractIOSTAdapter;
-    rpc: AbstractRPCAdapter;
     setAccount: (param: AbstractAccountAdapter) => void;
 };
 export declare const getIwalletJS: () => IWalletExtension;
-export declare const patchIWalletLocalHost: (iwallet: IWalletExtension | IOSTAdapter) => void;
+export declare const patchIWalletLocalHost: (iwallet: IOSTAdapter) => void;

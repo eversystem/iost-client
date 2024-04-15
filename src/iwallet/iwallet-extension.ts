@@ -44,10 +44,10 @@ export type IWalletAdapterPackType = {
 export type IWalletExtension = {
   account: AbstractAccountAdapter;
   enable: () => Promise<string>;
-  IOST: AbstractIOSTAdapter;
+  // IOST: AbstractIOSTAdapter;
   network: Network;
   newIOST: (pack: IWalletAdapterPackType) => AbstractIOSTAdapter;
-  rpc: AbstractRPCAdapter;
+  // rpc: AbstractRPCAdapter;
   setAccount: (param: AbstractAccountAdapter) => void;
 };
 
@@ -57,9 +57,7 @@ export const getIwalletJS = () => {
   return iwallet;
 };
 
-export const patchIWalletLocalHost = (
-  iwallet: IWalletExtension | IOSTAdapter,
-) => {
+export const patchIWalletLocalHost = (iwallet: IOSTAdapter) => {
   if (iwallet.network === 'LOCALNET') {
     iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
   }
