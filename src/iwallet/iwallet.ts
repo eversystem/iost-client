@@ -10,6 +10,7 @@ import {
   getIwalletJS,
   IWalletAdapterPackType,
   IWalletExtension,
+  patchLocalHost,
 } from './iwallet-extension';
 
 export type IWalletSignature = {
@@ -52,6 +53,7 @@ export class IWallet implements IOSTConfig {
   }
   set account(account: AccountAdapter) {
     this.#extension.setAccount(account);
+    patchLocalHost();
   }
   private constructor(extension: IWalletExtension) {
     this.#extension = extension;
@@ -69,6 +71,7 @@ export class IWallet implements IOSTConfig {
       }
       this.#instance = new IWallet(extension);
     }
+    patchLocalHost();
     return this.#instance;
   }
   signAndSend(tx: Transaction) {

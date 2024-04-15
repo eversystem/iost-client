@@ -54,8 +54,14 @@ export type IWalletExtension = {
 export const getIwalletJS = () => {
   const iwallet =
     window && (window['IWalletJS'] as IWalletExtension | undefined);
-  if (iwallet.network === 'LOCALNET') {
+  patchLocalHost();
+  return iwallet;
+};
+
+export const patchLocalHost = () => {
+  const iwallet =
+    window && (window['IWalletJS'] as IWalletExtension | undefined);
+  if (iwallet && iwallet.network === 'LOCALNET') {
     iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
   }
-  return iwallet;
 };

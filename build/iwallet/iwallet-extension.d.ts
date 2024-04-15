@@ -46,3 +46,4 @@ export type IWalletExtension = {
     setAccount: (param: AbstractAccountAdapter) => void;
 };
 export declare const getIwalletJS: () => IWalletExtension;
+export declare const patchLocalHost: () => void;

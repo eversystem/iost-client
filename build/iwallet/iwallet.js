@@ -36,6 +36,7 @@ class IWallet {
     }
     set account(account) {
         __classPrivateFieldGet(this, _IWallet_extension, "f").setAccount(account);
+        (0, iwallet_extension_1.patchLocalHost)();
     }
     constructor(extension) {
         _IWallet_instances.add(this);
@@ -56,6 +57,7 @@ class IWallet {
             }
             __classPrivateFieldSet(this, _a, new IWallet(extension), "f", _IWallet_instance);
         }
+        (0, iwallet_extension_1.patchLocalHost)();
         return __classPrivateFieldGet(this, _a, "f", _IWallet_instance);
     }
     signAndSend(tx) {
