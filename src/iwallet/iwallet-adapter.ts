@@ -48,7 +48,7 @@ export class IOSTAdapter extends AbstractIOSTAdapter implements IOSTConfig {
       : 0;
   }
   get host() {
-    return getIwalletJS().rpc._provider._host;
+    return this.rpc._provider._host;
   }
   setRPC(rpc: RPCAdapter) {
     this.rpc = rpc;

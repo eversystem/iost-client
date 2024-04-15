@@ -33,7 +33,7 @@ class IOSTAdapter extends iwallet_extension_1.AbstractIOSTAdapter {
                     : 0;
     }
     get host() {
-        return (0, iwallet_extension_1.getIwalletJS)().rpc._provider._host;
+        return this.rpc._provider._host;
     }
     setRPC(rpc) {
         this.rpc = rpc;
