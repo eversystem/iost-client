@@ -35,7 +35,7 @@ const getIwalletJS = () => {
 exports.getIwalletJS = getIwalletJS;
 const patchIWalletLocalHost = (iwallet) => {
     if (iwallet.network === 'LOCALNET') {
-        iwallet.rpc._provider._host = 'http://127.0.0.1:300001';
+        iwallet.rpc._provider._host = 'http://127.0.0.1:30001';
     }
 };
 exports.patchIWalletLocalHost = patchIWalletLocalHost;
