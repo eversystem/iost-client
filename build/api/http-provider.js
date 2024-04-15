@@ -6,15 +6,16 @@ const iwallet_adapter_1 = require("../iwallet/iwallet-adapter");
 class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     async get(url) {
         try {
-            const axios = new axios_1.Axios();
-            const res = await axios.request({
+            const config = {
                 method: 'get',
                 baseURL: this._host,
                 url,
                 headers: {
                     'Content-Type': 'text/plain',
                 },
-            });
+            };
+            const axios = new axios_1.Axios(config);
+            const res = await axios.request(config);
             return res.data;
         }
         catch (error) {
@@ -28,8 +29,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     }
     async post(url, data) {
         try {
-            const axios = new axios_1.Axios();
-            const res = await axios.request({
+            const config = {
                 method: 'post',
                 baseURL: this._host,
                 url,
@@ -37,7 +37,9 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                 headers: {
                     'Content-Type': 'text/plain',
                 },
-            });
+            };
+            const axios = new axios_1.Axios(config);
+            const res = await axios.request(config);
             return res.data;
         }
         catch (error) {
@@ -51,8 +53,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     }
     async stream(url, data) {
         try {
-            const axios = new axios_1.Axios();
-            const res = await axios.request({
+            const config = {
                 method: 'post',
                 baseURL: this._host,
                 url,
@@ -61,7 +62,9 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                     'Content-Type': 'text/plain',
                 },
                 responseType: 'stream',
-            });
+            };
+            const axios = new axios_1.Axios(config);
+            const res = await axios.request(config);
             return res.data;
         }
         catch (error) {

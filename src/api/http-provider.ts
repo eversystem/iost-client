@@ -4,15 +4,16 @@ import { HTTPProviderAdapter } from '../iwallet/iwallet-adapter';
 export class HTTPProvider extends HTTPProviderAdapter {
   async get<ResponseType>(url: string) {
     try {
-      const axios = new Axios();
-      const res = await axios.request<ResponseType>({
+      const config: AxiosRequestConfig = {
         method: 'get',
         baseURL: this._host,
         url,
         headers: {
           'Content-Type': 'text/plain',
         },
-      });
+      };
+      const axios = new Axios(config);
+      const res = await axios.request<ResponseType>(config);
       return res.data;
     } catch (error: any) {
       if (error.response) {
@@ -24,8 +25,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
   }
   async post<ResponseType>(url: string, data: AxiosRequestConfig['data']) {
     try {
-      const axios = new Axios();
-      const res = await axios.request<ResponseType>({
+      const config: AxiosRequestConfig = {
         method: 'post',
         baseURL: this._host,
         url,
@@ -33,7 +33,9 @@ export class HTTPProvider extends HTTPProviderAdapter {
         headers: {
           'Content-Type': 'text/plain',
         },
-      });
+      };
+      const axios = new Axios(config);
+      const res = await axios.request<ResponseType>(config);
       return res.data;
     } catch (error: any) {
       if (error.response) {
@@ -45,8 +47,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
   }
   async stream<ResponseType>(url: string, data: any) {
     try {
-      const axios = new Axios();
-      const res = await axios.request<ResponseType>({
+      const config: AxiosRequestConfig = {
         method: 'post',
         baseURL: this._host,
         url,
@@ -55,7 +56,9 @@ export class HTTPProvider extends HTTPProviderAdapter {
           'Content-Type': 'text/plain',
         },
         responseType: 'stream',
-      });
+      };
+      const axios = new Axios(config);
+      const res = await axios.request<ResponseType>(config);
       return res.data;
     } catch (error: any) {
       if (error.response) {
