@@ -1,10 +1,11 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import { Axios, AxiosRequestConfig } from 'axios';
 import { HTTPProviderAdapter } from '../iwallet/iwallet-adapter';
 
 export class HTTPProvider extends HTTPProviderAdapter {
   async get<ResponseType>(url: string) {
     try {
-      const res = await axios<ResponseType>({
+      const axios = new Axios();
+      const res = await axios.request<ResponseType>({
         method: 'get',
         baseURL: this._host,
         url,
@@ -23,7 +24,8 @@ export class HTTPProvider extends HTTPProviderAdapter {
   }
   async post<ResponseType>(url: string, data: AxiosRequestConfig['data']) {
     try {
-      const res = await axios<ResponseType>({
+      const axios = new Axios();
+      const res = await axios.request<ResponseType>({
         method: 'post',
         baseURL: this._host,
         url,
@@ -43,7 +45,8 @@ export class HTTPProvider extends HTTPProviderAdapter {
   }
   async stream<ResponseType>(url: string, data: any) {
     try {
-      const res = await axios<ResponseType>({
+      const axios = new Axios();
+      const res = await axios.request<ResponseType>({
         method: 'post',
         baseURL: this._host,
         url,

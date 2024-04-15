@@ -6,7 +6,8 @@ const iwallet_adapter_1 = require("../iwallet/iwallet-adapter");
 class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     async get(url) {
         try {
-            const res = await (0, axios_1.default)({
+            const axios = new axios_1.Axios();
+            const res = await axios.request({
                 method: 'get',
                 baseURL: this._host,
                 url,
@@ -27,7 +28,8 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     }
     async post(url, data) {
         try {
-            const res = await (0, axios_1.default)({
+            const axios = new axios_1.Axios();
+            const res = await axios.request({
                 method: 'post',
                 baseURL: this._host,
                 url,
@@ -49,7 +51,8 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     }
     async stream(url, data) {
         try {
-            const res = await (0, axios_1.default)({
+            const axios = new axios_1.Axios();
+            const res = await axios.request({
                 method: 'post',
                 baseURL: this._host,
                 url,
