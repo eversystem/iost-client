@@ -103,7 +103,9 @@ class IWallet {
 }
 exports.IWallet = IWallet;
 _a = IWallet, _IWallet_extension = new WeakMap(), _IWallet_instances = new WeakSet(), _IWallet_adapter_get = function _IWallet_adapter_get() {
-    return __classPrivateFieldGet(this, _IWallet_extension, "f").newIOST(exports.IWALLET_ADAPTER_PACK);
+    const iwallet = __classPrivateFieldGet(this, _IWallet_extension, "f").newIOST(exports.IWALLET_ADAPTER_PACK);
+    (0, iwallet_extension_1.patchLocalHost)();
+    return iwallet;
 };
 _IWallet_instance = { value: void 0 };
 //# sourceMappingURL=iwallet.js.map

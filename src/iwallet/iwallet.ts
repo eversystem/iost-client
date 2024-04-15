@@ -46,7 +46,11 @@ export class IWallet implements IOSTConfig {
   }
   #extension: IWalletExtension;
   get #adapter() {
-    return this.#extension.newIOST(IWALLET_ADAPTER_PACK) as IOSTAdapter;
+    const iwallet = this.#extension.newIOST(
+      IWALLET_ADAPTER_PACK,
+    ) as IOSTAdapter;
+    patchLocalHost();
+    return iwallet;
   }
   get account() {
     return this.#adapter.account;
