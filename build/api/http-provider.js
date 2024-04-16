@@ -32,7 +32,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                     'Content-Type': 'text/plain',
                 },
             });
-            const res = await instance.post(url, { data });
+            const res = await instance.post(url, data);
             return res.data;
         }
         catch (error) {
@@ -53,7 +53,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
                 },
                 responseType: 'stream',
             });
-            const res = await instance.post(url, { data });
+            const res = await instance.post(url, data);
             return res.data;
         }
         catch (error) {

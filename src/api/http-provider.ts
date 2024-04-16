@@ -29,7 +29,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
           'Content-Type': 'text/plain',
         },
       });
-      const res = await instance.post<ResponseType>(url, { data });
+      const res = await instance.post<ResponseType>(url, data);
       return res.data;
     } catch (error: any) {
       if (error.response) {
@@ -48,7 +48,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
         },
         responseType: 'stream',
       });
-      const res = await instance.post<ResponseType>(url, { data });
+      const res = await instance.post<ResponseType>(url, data);
       return res.data;
     } catch (error: any) {
       if (error.response) {
