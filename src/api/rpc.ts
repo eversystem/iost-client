@@ -131,12 +131,12 @@ export class RPC extends RPCAdapter {
     const url = 'sendTx';
     return await this._provider.post<RPCResponse.TransactionPending>(
       url,
-      tx.toString(),
+      tx.toJSON(),
     );
   }
   async execTx(tx: Transaction) {
     const url = 'execTx';
-    return await this._provider.post<TxReceiptInfo>(url, tx.toString());
+    return await this._provider.post<TxReceiptInfo>(url, tx.toJSON());
   }
   subscribe(topics: Params.SubscribeEventType[], contract: string) {
     const url = 'subscribe';

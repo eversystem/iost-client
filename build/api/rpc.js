@@ -99,11 +99,11 @@ class RPC extends iwallet_adapter_1.RPCAdapter {
     }
     async sendTx(tx) {
         const url = 'sendTx';
-        return await this._provider.post(url, tx.toString());
+        return await this._provider.post(url, tx.toJSON());
     }
     async execTx(tx) {
         const url = 'execTx';
-        return await this._provider.post(url, tx.toString());
+        return await this._provider.post(url, tx.toJSON());
     }
     subscribe(topics, contract) {
         const url = 'subscribe';
