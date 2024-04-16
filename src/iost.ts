@@ -47,12 +47,14 @@ export class IOST {
     return iost;
   }
   async setServerTimeDiff() {
-    const requestStartTime = new Date().getTime() * 1e6;
+    const requestTime = new Date().getTime() * 1e6;
     const nodeInfo = await this.rpc.getNodeInfo();
+    const responseTime = new Date().getTime() * 1e6;
+    const networkDelay = (responseTime - requestTime) / 2;
     const serverTime = Number(nodeInfo.server_time);
-    const serverTimeDiff = serverTime - requestStartTime;
-    const timeBuffer = 1 * 1e9;
-    this.#serverTimeDiff = serverTimeDiff + timeBuffer;
+    const currentServerTime = serverTime - networkDelay;
+    const serverTimeDiff = currentServerTime - responseTime;
+    this.#serverTimeDiff = serverTimeDiff + networkDelay;
     return this.serverTimeDiff;
   }
   async sign(
