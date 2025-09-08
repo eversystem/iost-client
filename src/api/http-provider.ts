@@ -9,7 +9,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
     method: 'GET' | 'POST',
     url: string,
     data?: any,
-    opts?: { stream?: boolean }
+    opts?: { stream?: boolean },
   ): Promise<ResponseType> {
     const fullUrl = new URL(url, this._host).toString();
 
@@ -18,7 +18,7 @@ export class HTTPProvider extends HTTPProviderAdapter {
       headers: this.headers,
     };
     if (method === 'POST') {
-      if (data == null) throw new Error('post data is undefied');
+      if (data == null) throw new Error('post data is undefined');
       init.body = typeof data === 'string' ? data : String(data);
     }
 
@@ -44,10 +44,15 @@ export class HTTPProvider extends HTTPProviderAdapter {
     return body as ResponseType;
   }
 
-  private async readError(res: Response, isJSONHint?: boolean): Promise<string> {
+  private async readError(
+    res: Response,
+    isJSONHint?: boolean,
+  ): Promise<string> {
     try {
       const ct = res.headers.get('content-type') ?? '';
-      const isJSON = isJSONHint ?? (ct.includes('application/json') || ct.includes('+json'));      const payload = isJSON ? await res.json() : await res.text();
+      const isJSON =
+        isJSONHint ?? (ct.includes('application/json') || ct.includes('+json'));
+      const payload = isJSON ? await res.json() : await res.text();
       return typeof payload === 'string' ? payload : JSON.stringify(payload);
     } catch {
       return `HTTP ${res.status} ${res.statusText}`;

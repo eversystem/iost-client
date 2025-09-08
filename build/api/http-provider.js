@@ -15,7 +15,7 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
         };
         if (method === 'POST') {
             if (data == null)
-                throw new Error('post data is undefied');
+                throw new Error('post data is undefined');
             init.body = typeof data === 'string' ? data : String(data);
         }
         const res = await fetch(fullUrl, init);
