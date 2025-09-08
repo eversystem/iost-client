@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { AbstractKeyPair, KeyPairAlgorithm } from './abstract-kp';
 import { Secp256k1 } from './secp256k1';
 import { Ed25519 } from './ed25519';

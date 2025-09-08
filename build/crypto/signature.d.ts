@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { Buffer } from 'buffer';
 export type SignatureStruct = {
     algorithm: string;

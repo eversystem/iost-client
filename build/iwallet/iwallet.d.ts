@@ -35,9 +35,9 @@ export declare class IWallet implements IOSTConfig {
     set account(account: AccountAdapter);
     private constructor();
     static connect(): Promise<IWallet>;
-    signAndSend(tx: Transaction): StrictEventEmitter<EventEmitter, IWalletTransactionEvents, IWalletTransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
+    signAndSend(tx: Transaction): StrictEventEmitter<EventEmitter<[never]>, IWalletTransactionEvents, IWalletTransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
     signAndSendAsync(tx: Transaction): Promise<TxReceiptInfo>;
-    signMessage(message: string): StrictEventEmitter<EventEmitter, IWalletSignEvents, IWalletSignEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
+    signMessage(message: string): StrictEventEmitter<EventEmitter<[never]>, IWalletSignEvents, IWalletSignEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
     signMessageAsync(message: string): Promise<IWalletSignature>;
     setAccount(account: Account): void;
 }

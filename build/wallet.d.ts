@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { Buffer } from 'buffer';
 import { Account } from './account';
 import { KeyPairPermission } from './data/params';

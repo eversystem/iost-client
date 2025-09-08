@@ -22,6 +22,6 @@ export type TransactionHandlerStatus = 'idle' | 'send' | 'pending' | 'failed' | 
 export declare class TransactionHandler {
     #private;
     constructor(tx: Transaction, host: string, config: Partial<TransactionHandlerConfig>);
-    send(): StrictEventEmitter<EventEmitter, TransactionEvents, TransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
+    send(): StrictEventEmitter<EventEmitter<[never]>, TransactionEvents, TransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
     sendAsync(): Promise<TxInfo>;
 }

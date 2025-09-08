@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { Signature, SignatureStruct } from '../crypto/signature';
 import { AmountLimit, KeyPairPermission, TransactionArgumentType } from '../data/params';
 export type TransactionProps = {

@@ -30,7 +30,7 @@ export declare class RPC extends RPCAdapter {
     }[], byLongestChain?: boolean): Promise<RPCResponse.ContractStorages[]>;
     sendTx(tx: Transaction): Promise<RPCResponse.TransactionPending>;
     execTx(tx: Transaction): Promise<TxReceiptInfo>;
-    subscribe(topics: Params.SubscribeEventType[], contract: string): StrictEventEmitter<EventEmitter, Params.SubscribeEvent, Params.SubscribeEvent, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
+    subscribe(topics: Params.SubscribeEventType[], contract: string): StrictEventEmitter<EventEmitter<[never]>, Params.SubscribeEvent, Params.SubscribeEvent, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
     getCandidateBonus(name: string, byLongestChain?: boolean): Promise<RPCResponse.CandidateBonus>;
     getVoterBonus(name: string, byLongestChain?: boolean): Promise<RPCResponse.VoterBonus>;
     getTokenInfo(symbol: string, byLongestChain?: boolean): Promise<TokenInfo>;

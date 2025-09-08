@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { AbstractKeyPair, KeyPairJSON } from './kp';
 import { KeyPairPermission } from './data/params';
 import { AccountAdapter } from './iwallet/iwallet-adapter';

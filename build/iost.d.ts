@@ -20,6 +20,6 @@ export declare class IOST {
     }[]): Promise<void>;
     createTransaction(props?: TransactionProps): Transaction;
     exec(tx: Transaction): Promise<import("./data/info").TxReceiptInfo>;
-    send(tx: Transaction, config: Partial<TransactionHandlerConfig>): import("strict-event-emitter-types/types/src").StrictEventEmitter<import("events"), import("./transaction/transaction-handler").TransactionEvents, import("./transaction/transaction-handler").TransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
+    send(tx: Transaction, config: Partial<TransactionHandlerConfig>): import("strict-event-emitter-types/types/src").StrictEventEmitter<import("events")<[never]>, import("./transaction/transaction-handler").TransactionEvents, import("./transaction/transaction-handler").TransactionEvents, "addEventListener" | "removeEventListener", "on" | "addListener" | "removeListener" | "once" | "emit">;
     sendAsync(tx: Transaction, config: Partial<TransactionHandlerConfig>): Promise<import("./data/info").TxInfo>;
 }

@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import { Signature } from '../crypto';
 export declare enum KeyPairAlgorithm {
     SECP256K1 = 1,
