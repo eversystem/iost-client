@@ -6,7 +6,8 @@
   "author": "kunroku,takaowada",
   "license": "ISC",
   "scripts": {
-    "build": "tsc --project tsconfig.build.json && webpack"
+    "build": "tsc --project tsconfig.build.json && webpack",
+    "prepare": "yarn build"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.1",
