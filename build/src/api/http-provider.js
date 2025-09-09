@@ -34,7 +34,6 @@ class HTTPProvider extends iwallet_adapter_1.HTTPProviderAdapter {
     async post(url, data) {
         var _a, _b;
         const fullUrl = new URL(url, this._host).toString();
-        console.log('data', data);
         try {
             const res = await fetch(fullUrl, {
                 method: 'POST',

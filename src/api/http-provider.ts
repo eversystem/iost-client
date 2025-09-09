@@ -40,7 +40,6 @@ export class HTTPProvider extends HTTPProviderAdapter {
   async post<ResponseType>(url: string, data: unknown) {
     const fullUrl = new URL(url, this._host).toString();
 
-    console.log('data', data);
     //typeof data === 'string' ? data : String(data),
     try {
       const res = await fetch(fullUrl, {
