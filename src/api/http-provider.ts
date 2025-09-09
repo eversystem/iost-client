@@ -1,133 +1,112 @@
 //import * as axios from 'axios';
 //import { AxiosRequestConfig } from 'axios';
 import { HTTPProviderAdapter } from '../iwallet/iwallet-adapter';
+import type { ReadableStream as NodeReadableStream } from 'node:stream/web';
+import type { Readable as NodeReadable } from 'node:stream';
+import { Readable } from 'node:stream';
 
 export class HTTPProvider extends HTTPProviderAdapter {
-  private readonly headers = { 'Content-Type': 'text/plain' as const };
+  async get<ResponseType>(url: string) {
+    const fullUrl = new URL(url, this._host).toString();
+    const headers = { 'Content-Type': 'text/plain' as const };
 
-  private async request<ResponseType>(
-    method: 'GET' | 'POST',
-    url: string,
-    data?: any,
-    opts?: { stream?: boolean },
-  ): Promise<ResponseType> {
+    try {
+      const res = await fetch(fullUrl, { method: 'GET', headers });
+
+      const ct = res.headers.get('content-type') ?? '';
+      const isJSON = ct.includes('application/json') || ct.includes('+json');
+
+      if (!res.ok) {
+        let payload: unknown;
+        try {
+          payload = isJSON ? await res.json() : await res.text();
+        } catch {}
+        throw new Error(
+          typeof payload === 'string'
+            ? payload
+            : payload
+            ? JSON.stringify(payload)
+            : `HTTP ${res.status} ${res.statusText}`,
+        );
+      }
+
+      const data = isJSON ? await res.json() : await res.text();
+      return data as ResponseType;
+    } catch (err: any) {
+      throw new Error(err?.message ?? String(err));
+    }
+  }
+
+  async post<ResponseType>(url: string, data: unknown) {
     const fullUrl = new URL(url, this._host).toString();
 
-    const init: RequestInit = {
-      method,
-      headers: this.headers,
-    };
-    if (method === 'POST') {
-      if (data == null) throw new Error('post data is undefined');
-      init.body = typeof data === 'string' ? data : String(data);
+    console.log('data', data);
+    //typeof data === 'string' ? data : String(data),
+    try {
+      const res = await fetch(fullUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(data) as BodyInit,
+      });
+
+      const ct = res.headers.get('content-type') ?? '';
+      const isJSON = ct.includes('application/json') || ct.includes('+json');
+
+      if (!res.ok) {
+        let payload: unknown;
+        try {
+          payload = isJSON ? await res.json() : await res.text();
+        } catch {}
+        throw new Error(
+          typeof payload === 'string'
+            ? payload
+            : payload
+            ? JSON.stringify(payload)
+            : `HTTP ${res.status} ${res.statusText}`,
+        );
+      }
+
+      const out = isJSON ? await res.json() : await res.text();
+      return out as ResponseType;
+    } catch (err: any) {
+      throw new Error(err?.message ?? String(err));
     }
+  }
 
-    const res = await fetch(fullUrl, init);
+  // Node 専用にしたい場合は return 型を Readable に
+  // ここではトップの import を避け、型参照は import() で書いています
+  async stream<ReadStream>(url: string, data: any): Promise<Readable> {
+    const fullUrl = new URL(url, this._host).toString();
 
-    // ストリーム要求（axios の responseType: 'stream' 相当）
-    if (opts?.stream) {
-      if (!res.ok) throw new Error(await this.readError(res));
-      // そのまま Web ReadableStream を返す
-      // Node 側で Node.js Stream が欲しければ Readable.fromWeb(res.body) を使ってください
-      return res.body as unknown as ResponseType;
-    }
+    const res = await fetch(fullUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: typeof data === 'string' ? data : String(data),
+    });
 
-    // 通常のレスポンス
-    const ct = res.headers.get('content-type') || '';
+    const ct = res.headers.get('content-type') ?? '';
     const isJSON = ct.includes('application/json') || ct.includes('+json');
 
     if (!res.ok) {
-      throw new Error(await this.readError(res, isJSON));
+      let payload: unknown;
+      try {
+        payload = isJSON ? await res.json() : await res.text();
+      } catch {}
+      throw new Error(
+        typeof payload === 'string'
+          ? payload
+          : payload
+          ? JSON.stringify(payload)
+          : `HTTP ${res.status} ${res.statusText}`,
+      );
     }
 
-    const body = isJSON ? await res.json() : await res.text();
-    return body as ResponseType;
-  }
+    if (!res.body) throw new Error('Empty response body');
 
-  private async readError(
-    res: Response,
-    isJSONHint?: boolean,
-  ): Promise<string> {
-    try {
-      const ct = res.headers.get('content-type') ?? '';
-      const isJSON =
-        isJSONHint ?? (ct.includes('application/json') || ct.includes('+json'));
-      const payload = isJSON ? await res.json() : await res.text();
-      return typeof payload === 'string' ? payload : JSON.stringify(payload);
-    } catch {
-      return `HTTP ${res.status} ${res.statusText}`;
-    }
-  }
-
-  async get<ResponseType>(url: string) {
-    return this.request<ResponseType>('GET', url);
-  }
-
-  async post<ResponseType>(url: string, data: any) {
-    return this.request<ResponseType>('POST', url, data);
-  }
-
-  async stream<ResponseType>(url: string, data: any) {
-    return this.request<ResponseType>('POST', url, data, { stream: true });
+    // ★ DOM ReadableStream → Node の Web ReadableStream 型へ“型だけ”キャスト
+    const nodeStream = Readable.fromWeb(
+      res.body as unknown as NodeReadableStream,
+    );
+    return nodeStream;
   }
 }
-
-/*
-export class HTTPProvider extends HTTPProviderAdapter {
-  async get<ResponseType>(url: string) {
-    try {
-      const instance = axios.default.create({
-        baseURL: this._host,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-      });
-      const res = await instance.get<ResponseType>(url);
-      return res.data;
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(`${JSON.stringify(error.response.data)}`);
-      } else {
-        throw new Error(error.message);
-      }
-    }
-  }
-  async post<ResponseType>(url: string, data: AxiosRequestConfig['data']) {
-    try {
-      const instance = axios.default.create({
-        baseURL: this._host,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-      });
-      const res = await instance.post<ResponseType>(url, data);
-      return res.data;
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(`${JSON.stringify(error.response.data)}`);
-      } else {
-        throw new Error(error.message);
-      }
-    }
-  }
-  async stream<ResponseType>(url: string, data: any) {
-    try {
-      const instance = axios.default.create({
-        baseURL: this._host,
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        responseType: 'stream',
-      });
-      const res = await instance.post<ResponseType>(url, data);
-      return res.data;
-    } catch (error: any) {
-      if (error.response) {
-        throw new Error(`${JSON.stringify(error.response.data)}`);
-      } else {
-        throw new Error(error.message);
-      }
-    }
-  }
-}
-*/
