@@ -8,10 +8,15 @@ const iost = new IOST(config);
 
 async function f() {
   //console.log('ADDRESS', ADDRESS);
+  // const res = await iost.rpc.getContractStorage(
+  //   'Contract3e1wfM1FhyULnLHusbmHxvDbiuSs73LBHBdxBBPkE8Eh',
+  //   'news',
+  //   '',
+  // );
   const res = await iost.rpc.getContractStorage(
     'Contract3e1wfM1FhyULnLHusbmHxvDbiuSs73LBHBdxBBPkE8Eh',
-    'news',
-    '',
+    'cert_amount',
+    'a10001',
   );
   const news = JSON.parse(res.data);
   console.log(news);

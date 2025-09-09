@@ -1,5 +1,3 @@
-//import * as axios from 'axios';
-//import { AxiosRequestConfig } from 'axios';
 import { HTTPProviderAdapter } from '../iwallet/iwallet-adapter';
 import type { ReadableStream as NodeReadableStream } from 'node:stream/web';
 import type { Readable as NodeReadable } from 'node:stream';
