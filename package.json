@@ -1,5 +1,5 @@
 {
-  "name": "@iost/client",
+  "name": "@drjiro/iost-client",
   "version": "0.1.0",
   "description": "iost JavaScript Client SDK",
   "main": "build/index.js",
