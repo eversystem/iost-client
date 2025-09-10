@@ -1,80 +1,72 @@
 import { HTTPProviderAdapter } from '../iwallet/iwallet-adapter';
-import type { ReadableStream as NodeReadableStream } from 'node:stream/web';
-import type { Readable as NodeReadable } from 'node:stream';
-import { Readable } from 'node:stream';
+
+const isNode = () =>
+  typeof process !== 'undefined' && !!process.versions?.node;
 
 export class HTTPProvider extends HTTPProviderAdapter {
   async get<ResponseType>(url: string) {
     const fullUrl = new URL(url, this._host).toString();
-    const headers = { 'Content-Type': 'text/plain' as const };
+    const res = await fetch(fullUrl, {
+      method: 'GET',
+      headers: { 'Content-Type': 'text/plain' as const },
+    });
 
-    try {
-      const res = await fetch(fullUrl, { method: 'GET', headers });
+    const ct = res.headers.get('content-type') ?? '';
+    const isJSON = ct.includes('application/json') || ct.includes('+json');
 
-      const ct = res.headers.get('content-type') ?? '';
-      const isJSON = ct.includes('application/json') || ct.includes('+json');
-
-      if (!res.ok) {
-        let payload: unknown;
-        try {
-          payload = isJSON ? await res.json() : await res.text();
-        } catch {}
-        throw new Error(
-          typeof payload === 'string'
-            ? payload
-            : payload
-            ? JSON.stringify(payload)
-            : `HTTP ${res.status} ${res.statusText}`,
-        );
-      }
-
-      const data = isJSON ? await res.json() : await res.text();
-      return data as ResponseType;
-    } catch (err: any) {
-      throw new Error(err?.message ?? String(err));
+    if (!res.ok) {
+      let payload: unknown;
+      try {
+        payload = isJSON ? await res.json() : await res.text();
+      } catch {}
+      throw new Error(
+        typeof payload === 'string'
+          ? payload
+          : payload
+          ? JSON.stringify(payload)
+          : `HTTP ${res.status} ${res.statusText}`,
+      );
     }
+
+    const data = isJSON ? await res.json() : await res.text();
+    return data as ResponseType;
   }
 
   async post<ResponseType>(url: string, data: unknown) {
     const fullUrl = new URL(url, this._host).toString();
+    const res = await fetch(fullUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data) as BodyInit,
+    });
 
-    //typeof data === 'string' ? data : String(data),
-    try {
-      const res = await fetch(fullUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(data) as BodyInit,
-      });
+    const ct = res.headers.get('content-type') ?? '';
+    const isJSON = ct.includes('application/json') || ct.includes('+json');
 
-      const ct = res.headers.get('content-type') ?? '';
-      const isJSON = ct.includes('application/json') || ct.includes('+json');
-
-      if (!res.ok) {
-        let payload: unknown;
-        try {
-          payload = isJSON ? await res.json() : await res.text();
-        } catch {}
-        throw new Error(
-          typeof payload === 'string'
-            ? payload
-            : payload
-            ? JSON.stringify(payload)
-            : `HTTP ${res.status} ${res.statusText}`,
-        );
-      }
-
-      const out = isJSON ? await res.json() : await res.text();
-      return out as ResponseType;
-    } catch (err: any) {
-      throw new Error(err?.message ?? String(err));
+    if (!res.ok) {
+      let payload: unknown;
+      try {
+        payload = isJSON ? await res.json() : await res.text();
+      } catch {}
+      throw new Error(
+        typeof payload === 'string'
+          ? payload
+          : payload
+          ? JSON.stringify(payload)
+          : `HTTP ${res.status} ${res.statusText}`,
+      );
     }
+
+    const out = isJSON ? await res.json() : await res.text();
+    return out as ResponseType;
   }
 
-  // Node 専用にしたい場合は return 型を Readable に
-  // ここではトップの import を避け、型参照は import() で書いています
-  async stream<ReadStream>(url: string, data: any): Promise<Readable> {
+  /**
+   * Node では stream.Readable、ブラウザでは ReadableStream<Uint8Array> を返す。
+   * 公開型を厳密にしたい場合は .d.ts で overload を切ってください。
+   */
+  async stream(url: string, data: unknown): Promise<any> {
     const fullUrl = new URL(url, this._host).toString();
-
     const res = await fetch(fullUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
@@ -100,10 +92,13 @@ export class HTTPProvider extends HTTPProviderAdapter {
 
     if (!res.body) throw new Error('Empty response body');
 
-    // ★ DOM ReadableStream → Node の Web ReadableStream 型へ“型だけ”キャスト
-    const nodeStream = Readable.fromWeb(
-      res.body as unknown as NodeReadableStream,
-    );
-    return nodeStream;
+    if (isNode()) {
+      const { Readable } = await import('stream');
+      const webStream = res.body as unknown as any;
+      return (Readable as any).fromWeb(webStream);
+    }
+
+    // ブラウザはそのまま返す（DOM ReadableStream）
+    return res.body;
   }
 }

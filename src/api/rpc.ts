@@ -146,7 +146,7 @@ export class RPC extends RPCAdapter {
     };
     const event: StrictEventEmitter<EventEmitter, Params.SubscribeEvent> =
       new EventEmitter();
-    this._provider.stream<ReadStream>(url, data).then(async (readable) => {
+    this._provider.stream(url, data).then(async (readable) => {
       for await (const chunk of readable) {
         const messages: Params.Subscribe[] = Buffer.from(chunk)
           .toString('utf-8')
@@ -203,7 +203,7 @@ export class RPC extends RPCAdapter {
     return await this._provider.post<RPCResponse.ContractStorageList>(url, {
       id: contract,
       limit,
-      by_longest_cahin: byLongestChain,
+      by_longest_chain: byLongestChain,
     });
   }
   async listContractStorageMap(
@@ -216,7 +216,7 @@ export class RPC extends RPCAdapter {
       id: contract,
       limit,
       storageType: 'MAP',
-      by_longest_cahin: byLongestChain,
+      by_longest_chain: byLongestChain,
     });
   }
   async listContractStorageMapByPrefix(
@@ -231,7 +231,7 @@ export class RPC extends RPCAdapter {
       limit,
       prefix,
       storageType: 'MAP',
-      by_longest_cahin: byLongestChain,
+      by_longest_chain: byLongestChain,
     });
   }
   async listContractStorageMapByRange(
@@ -247,7 +247,7 @@ export class RPC extends RPCAdapter {
       from: range.from,
       to: range.to,
       storageType: 'MAP',
-      by_longest_cahin: byLongestChain,
+      by_longest_chain: byLongestChain,
     });
   }
 }

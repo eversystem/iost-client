@@ -1,17 +1,39 @@
 {
   "name": "@iost/client",
   "version": "0.1.0",
+  "description": "iost JavaScript Client SDK",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "browser": "dist/iost.min.js",
   "author": "kunroku,takaowada",
-  "license": "ISC",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./build/index.d.ts",
+      "require": "./build/index.js",
+      "import": "./build/index.js",
+      "browser": "./dist/iost.min.js"
+    }
+  },
+  "files": [
+    "build/**",
+    "dist/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": { "node": ">=20.0.0" },
   "scripts": {
     "build": "tsc --project tsconfig.build.json && webpack",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "prepack": "yarn build",
+    "test:pack": "npm pack --dry-run"
   },
+  "publishConfig": { "access": "public" },
   "devDependencies": {
     "@types/bn.js": "^5.1.1",
     "@types/elliptic": "^6.4.14",
+    "@types/esprima": "^4.0.3",
+    "@types/estree": "^1.0.1",
     "@types/events": "^3.0.0",
     "@types/node": "^24.3.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
@@ -27,8 +49,6 @@
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
-    "@types/esprima": "^4.0.3",
-    "@types/estree": "^1.0.1",
     "bn.js": "^5.2.1",
     "bs58": "^5.0.0",
     "buffer": "^6.0.3",

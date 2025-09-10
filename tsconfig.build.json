@@ -1,4 +1,18 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "build"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build", "dist","examples/**/*"],
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "build",
+    "outDir": "build",
+    "rootDir": "src",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "noEmit": false,
+    "noEmitOnError": false,
+    "composite": false,
+    "incremental": false,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"]
+  }
 }
